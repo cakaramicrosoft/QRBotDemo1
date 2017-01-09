@@ -65,6 +65,10 @@ public class BasicLuisDialog : LuisDialog<object>
         {
             flightDateArrivalorDeparture = "Arrival";
         }
+        else
+        {
+            flightDateArrivalorDeparture = "noluyoya"
+        }
        
 
         // Find if the customer specified the flight date:
