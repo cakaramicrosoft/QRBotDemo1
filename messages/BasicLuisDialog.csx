@@ -44,6 +44,7 @@ public class BasicLuisDialog : LuisDialog<object>
     {
         string flight_code = "";
         string flight_date;
+        string flightDateArrivalorDeparture = "Departure";
         EntityRecommendation title;
         //Find if the customer specified the flight code:
         if (result.TryFindEntity(Entity_Flight_Code, out title))
@@ -57,23 +58,18 @@ public class BasicLuisDialog : LuisDialog<object>
             await context.PostAsync($"You didn't specift a Flight Code!");
            // context.Wait(MessageReceived);
         }
-        
+
+        // Find if the customer specified the date is arrival:
+        if (result.TryFindEntity(Entity_Flight_Date_Arrival, out title))
+        {
+            flightDateArrivalorDeparture = "Arrival";
+        }
+
         // Find if the customer specified the flight date:
         if (result.TryFindEntity(Entity_Flight_Date, out title))
-        {   // Find if the customer specified the date is arrival:
-            String isDateArrival;
-            if (result.TryFindEntity(Entity_Flight_Date_Arrival, out title))
-            {
-                isDateArrival = title.Entity;
-                await context.PostAsync($"Flight Date is specified as Arrival Date!");
-            }
-            else
-            {
-                await context.PostAsync($"Flight Date is defaulted as Departure Date!");
-
-            }
+        {   
             flight_date = title.Entity;
-            await context.PostAsync($"Flight Date is:" + flight_date);
+            await context.PostAsync($"Flight "+flightDateArrivalorDeparture+" Date is:" + flight_date);
             //context.Wait(MessageReceived);
         }
         else
