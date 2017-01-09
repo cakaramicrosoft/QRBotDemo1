@@ -42,7 +42,7 @@ public class BasicLuisDialog : LuisDialog<object>
     public async Task FlightStatusIntent(IDialogContext context, LuisResult result)
     {
         string flight_code = "";
-        DateTime flight_date;
+        string flight_date;
         EntityRecommendation title;
         //Find if the customer specified the flight code:
         if (result.TryFindEntity(Entity_Flight_Code, out title))
@@ -60,7 +60,7 @@ public class BasicLuisDialog : LuisDialog<object>
         if (result.TryFindEntity(Entity_Flight_Date, out title))
         {
             flight_date = title.Entity;
-            await context.PostAsync($"Flight Date is:" + flight_date.ToShortDateString());
+            await context.PostAsync($"Flight Date is:" + flight_date);
             context.Wait(MessageReceived);
         }
         else
