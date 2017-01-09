@@ -29,4 +29,10 @@ public class BasicLuisDialog : LuisDialog<object>
         await context.PostAsync($"You have reached the MyIntent intent. You said: {result.Query}"); //
         context.Wait(MessageReceived);
     }
+    [LuisIntent("greeting")]
+    public async Task GreetingIntent(IDialogContext context, LuisResult result)
+    {
+        await context.PostAsync($"Hello! How can I help you?"); //
+        context.Wait(MessageReceived);
+    }
 }
