@@ -35,4 +35,10 @@ public class BasicLuisDialog : LuisDialog<object>
         await context.PostAsync($"Hello! How can I help you?"); //
         context.Wait(MessageReceived);
     }
+    [LuisIntent("flightstatus")]
+    public async Task FlightStatusIntent(IDialogContext context, LuisResult result)
+    {
+        await context.PostAsync($"You asked for Flight Status for Flight:"+result.Entities.get("flight_code")); //
+        context.Wait(MessageReceived);
+    }
 }
