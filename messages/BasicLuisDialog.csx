@@ -60,7 +60,7 @@ public class BasicLuisDialog : LuisDialog<object>
         if (result.TryFindEntity(Entity_Flight_Date, out title))
         {
             flight_date = title.Entity;
-            await context.PostAsync($"Flight Date is:" + flight_date);
+            await context.PostAsync($"Flight Date is:" + flight_date.ToShortDateString());
             context.Wait(MessageReceived);
         }
         else
