@@ -13,6 +13,7 @@ public class BasicLuisDialog : LuisDialog<object>
     public const string Entity_Flight_Code = "flight_code";
     public const string Entity_Flight_Date = "builtin.datetime.date";
     public const string Entity_Flight_Date_Arrival = "isDateArrival";
+    public const string Entity_City = "builtin.geography.city";
 
     public BasicLuisDialog() : base(new LuisService(new LuisModelAttribute(Utils.GetAppSetting("LuisAppId"), Utils.GetAppSetting("LuisAPIKey"))))
     {
@@ -46,6 +47,7 @@ public class BasicLuisDialog : LuisDialog<object>
         string flight_date="";
         string flightDateArrivalorDeparture = "Departure";
         bool allChecksPassed = true;
+        string flight_from_city = "";
         EntityRecommendation title;
         //Find if the customer specified the flight code:
         if (result.TryFindEntity(Entity_Flight_Code, out title))
@@ -57,7 +59,13 @@ public class BasicLuisDialog : LuisDialog<object>
         {
             await context.PostAsync($"You didn't specift a Flight Code!");
             allChecksPassed = false;
-           // context.Wait(MessageReceived);
+          
+        }
+        //Find the from city:
+        if (result.TryFindEntity(Entity_City, out title))
+        {
+            flight_from_city = title.Entity;
+            
         }
 
         // Find if the customer specified the date is arrival:
@@ -78,7 +86,7 @@ public class BasicLuisDialog : LuisDialog<object>
         }
         if (allChecksPassed)
         {
-            await context.PostAsync($"You asked for Flight Status for Flight:" + flight_code+ " " +flightDateArrivalorDeparture+" on "+flight_date); 
+            await context.PostAsync($"You asked for Flight Status for Flight:" + flight_code+ " " +flightDateArrivalorDeparture+" "+flight_date+" from city:"+flight_from_city); 
         }
 
         context.Wait(MessageReceived);
