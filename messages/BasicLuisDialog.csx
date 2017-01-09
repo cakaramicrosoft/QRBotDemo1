@@ -61,27 +61,20 @@ public class BasicLuisDialog : LuisDialog<object>
         }
 
         // Find if the customer specified the date is arrival:
+
         if (result.TryFindEntity(Entity_Flight_Date_Arrival, out title))
-        {
+        {   
             flightDateArrivalorDeparture = "Arrival";
         }
-        else
-        {
-            flightDateArrivalorDeparture = "noluyoya";
-        }
-       
-
+        
         // Find if the customer specified the flight date:
         if (result.TryFindEntity(Entity_Flight_Date, out title))
         {   
             flight_date = title.Entity;
-            //context.Wait(MessageReceived);
         }
         else
         {
-            await context.PostAsync($"You didn't specift a Flight Date!");
-            allChecksPassed = false;
-            //context.Wait(MessageReceived);
+            flight_date = "today";
         }
         if (allChecksPassed)
         {
