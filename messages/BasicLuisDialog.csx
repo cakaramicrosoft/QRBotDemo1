@@ -12,6 +12,7 @@ public class BasicLuisDialog : LuisDialog<object>
 {
     public const string Entity_Flight_Code = "flight_code";
     public const string Entity_Flight_Date = "builtin.datetime.date";
+    public const string Entity_Flight_Date_Arrival = "isDateArrival";
 
     public BasicLuisDialog() : base(new LuisService(new LuisModelAttribute(Utils.GetAppSetting("LuisAppId"), Utils.GetAppSetting("LuisAPIKey"))))
     {
@@ -56,9 +57,21 @@ public class BasicLuisDialog : LuisDialog<object>
             await context.PostAsync($"You didn't specift a Flight Code!");
            // context.Wait(MessageReceived);
         }
+        
         // Find if the customer specified the flight date:
         if (result.TryFindEntity(Entity_Flight_Date, out title))
-        {
+        {   // Find if the customer specified the date is arrival:
+            String isDateArrival;
+            if (result.TryFindEntity(Entity_Flight_Date_Arrival, out title))
+            {
+                isDateArrival = title.Entity;
+                await context.PostAsync($"Flight Date is specified as Arrival Date!");
+            }
+            else
+            {
+                await context.PostAsync($"Flight Date is defaulted as Departure Date!");
+
+            }
             flight_date = title.Entity;
             await context.PostAsync($"Flight Date is:" + flight_date);
             //context.Wait(MessageReceived);
