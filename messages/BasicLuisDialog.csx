@@ -45,17 +45,18 @@ public class BasicLuisDialog : LuisDialog<object>
         string flight_code = "";
         string flight_date;
         string flightDateArrivalorDeparture = "Departure";
+        bool allChecksPassed = true;
         EntityRecommendation title;
         //Find if the customer specified the flight code:
         if (result.TryFindEntity(Entity_Flight_Code, out title))
         {
             flight_code = title.Entity;
-            await context.PostAsync($"You asked for Flight Status for Flight:" + flight_code); 
             //context.Wait(MessageReceived);
         }
         else
         {
             await context.PostAsync($"You didn't specift a Flight Code!");
+            allChecksPassed = false;
            // context.Wait(MessageReceived);
         }
 
@@ -70,14 +71,19 @@ public class BasicLuisDialog : LuisDialog<object>
         if (result.TryFindEntity(Entity_Flight_Date, out title))
         {   
             flight_date = title.Entity;
-            await context.PostAsync($"Flight "+flightDateArrivalorDeparture+" Date is:" + flight_date);
             //context.Wait(MessageReceived);
         }
         else
         {
             await context.PostAsync($"You didn't specift a Flight Date!");
+            allChecksPassed = false;
             //context.Wait(MessageReceived);
         }
+        if (allChecksPassed)
+        {
+            await context.PostAsync($"You asked for Flight Status for Flight:" + flight_code+ " " +flightDateArrivalorDeparture+" on "+flight_date); 
+        }
+
         context.Wait(MessageReceived);
     }
     
