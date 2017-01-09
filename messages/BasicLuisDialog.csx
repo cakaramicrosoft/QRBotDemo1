@@ -67,7 +67,7 @@ public class BasicLuisDialog : LuisDialog<object>
         }
         else
         {
-            flightDateArrivalorDeparture = "noluyoya"
+            flightDateArrivalorDeparture = "noluyoya";
         }
        
 
