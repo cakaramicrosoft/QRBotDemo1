@@ -10,6 +10,8 @@ using Microsoft.Bot.Builder.Luis.Models;
 [Serializable]
 public class BasicLuisDialog : LuisDialog<object>
 {
+    public const string Entity_Flight_Code = "flight_code";
+
     public BasicLuisDialog() : base(new LuisService(new LuisModelAttribute(Utils.GetAppSetting("LuisAppId"), Utils.GetAppSetting("LuisAPIKey"))))
     {
     }
@@ -38,7 +40,19 @@ public class BasicLuisDialog : LuisDialog<object>
     [LuisIntent("flightstatus")]
     public async Task FlightStatusIntent(IDialogContext context, LuisResult result)
     {
-        await context.PostAsync($"You asked for Flight Status for Flight:"+result.Entities.get("flight_code")); //
-        context.Wait(MessageReceived);
+        string flight_code = "";
+        if (result.TryFindEntity(Entity_Flight_Code, out title))
+        {
+            flight_code = title.Entity;
+            await context.PostAsync($"You asked for Flight Status for Flight:" + flight_code); 
+            context.Wait(MessageReceived);
+        }
+        else
+        {
+            await context.PostAsync($"You didn't specift a Flight Code!");
+            context.Wait(MessageReceived);
+        }
     }
+    
+
 }
