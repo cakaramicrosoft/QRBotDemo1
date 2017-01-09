@@ -43,7 +43,7 @@ public class BasicLuisDialog : LuisDialog<object>
     public async Task FlightStatusIntent(IDialogContext context, LuisResult result)
     {
         string flight_code = "";
-        string flight_date;
+        string flight_date="";
         string flightDateArrivalorDeparture = "Departure";
         bool allChecksPassed = true;
         EntityRecommendation title;
