@@ -49,25 +49,26 @@ public class BasicLuisDialog : LuisDialog<object>
         {
             flight_code = title.Entity;
             await context.PostAsync($"You asked for Flight Status for Flight:" + flight_code); 
-            context.Wait(MessageReceived);
+            //context.Wait(MessageReceived);
         }
         else
         {
             await context.PostAsync($"You didn't specift a Flight Code!");
-            context.Wait(MessageReceived);
+           // context.Wait(MessageReceived);
         }
         // Find if the customer specified the flight date:
         if (result.TryFindEntity(Entity_Flight_Date, out title))
         {
             flight_date = title.Entity;
             await context.PostAsync($"Flight Date is:" + flight_date);
-            context.Wait(MessageReceived);
+            //context.Wait(MessageReceived);
         }
         else
         {
             await context.PostAsync($"You didn't specift a Flight Date!");
-            context.Wait(MessageReceived);
+            //context.Wait(MessageReceived);
         }
+        context.Wait(MessageReceived);
     }
     
 
