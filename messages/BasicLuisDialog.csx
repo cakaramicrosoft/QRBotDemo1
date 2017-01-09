@@ -41,6 +41,7 @@ public class BasicLuisDialog : LuisDialog<object>
     public async Task FlightStatusIntent(IDialogContext context, LuisResult result)
     {
         string flight_code = "";
+        EntityRecommendation title;
         if (result.TryFindEntity(Entity_Flight_Code, out title))
         {
             flight_code = title.Entity;
