@@ -11,6 +11,7 @@ using Microsoft.Bot.Builder.Luis.Models;
 public class BasicLuisDialog : LuisDialog<object>
 {
     public const string Entity_Flight_Code = "flight_code";
+    public const string Entity_Flight_Date = "builtin.datetime.date";
 
     public BasicLuisDialog() : base(new LuisService(new LuisModelAttribute(Utils.GetAppSetting("LuisAppId"), Utils.GetAppSetting("LuisAPIKey"))))
     {
@@ -41,7 +42,9 @@ public class BasicLuisDialog : LuisDialog<object>
     public async Task FlightStatusIntent(IDialogContext context, LuisResult result)
     {
         string flight_code = "";
+        DateTime flight_date;
         EntityRecommendation title;
+        //Find if the customer specified the flight code:
         if (result.TryFindEntity(Entity_Flight_Code, out title))
         {
             flight_code = title.Entity;
@@ -51,6 +54,18 @@ public class BasicLuisDialog : LuisDialog<object>
         else
         {
             await context.PostAsync($"You didn't specift a Flight Code!");
+            context.Wait(MessageReceived);
+        }
+        // Find if the customer specified the flight date:
+        if (result.TryFindEntity(Entity_Flight_Date, out title))
+        {
+            flight_date = title.Entity;
+            await context.PostAsync($"Flight Date is:" + flight_date);
+            context.Wait(MessageReceived);
+        }
+        else
+        {
+            await context.PostAsync($"You didn't specift a Flight Date!");
             context.Wait(MessageReceived);
         }
     }
