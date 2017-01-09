@@ -64,10 +64,7 @@ public class BasicLuisDialog : LuisDialog<object>
         {
             flightDateArrivalorDeparture = "Arrival";
         }
-        else
-        {
-            flightDateArrivalorDeparture = "Nedir";
-        }
+       
 
         // Find if the customer specified the flight date:
         if (result.TryFindEntity(Entity_Flight_Date, out title))
